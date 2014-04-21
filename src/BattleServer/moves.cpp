@@ -3299,7 +3299,7 @@ struct MMTaunt : public MM
     }
 
     static void mp(int s, int, BS &b) {
-        if (!b.counters(s).hasCounter(BC::Taunt)) {
+        if (!b.counters(s).hasCounter(BC::Taunt) || (b.battleMemory().contains("CoatingAttackNow") && b.battleMemory()["CoatingAttackNow"].toBool() == true)) {
             return;
         }
         int move = turn(b,s)["MoveChosen"].toInt();

@@ -1691,21 +1691,9 @@ struct AMMagicBounce : public AM
         MoveEffect::setup(move,target,s,b);
 
         turn(b,target)["Target"] = s;
+
         b.battleMemory()["CoatingAttackNow"] = true;
-
-        bool isTaunted = b.counters(target).hasCounter(BC::Taunt);
-        int tauntCounter = (isTaunted ? b.counters(target).count(BC::Taunt) : 0);
-
-        if (isTaunted) {
-            b.counters(target).removeCounter(BC::Taunt);
-        }
-
         b.useAttack(target,move,true,false);
-
-        if (isTaunted) {
-            b.counters(target).addCounter(BC::Taunt, tauntCounter);
-        }
-
         b.battleMemory().remove("CoatingAttackNow");
 
         /* Restoring previous state. Only works because moves reflected don't store useful data in the turn memory,
