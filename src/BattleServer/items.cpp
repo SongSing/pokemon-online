@@ -467,8 +467,8 @@ struct IMQuickClaw : public IM
         functions["TurnOrder"] = &tu;
     }
     static void tu(int s, int, BS &b) {
-        if (b.coinflip(1, 5)) {
-            turn(b,s)["TurnOrder"] = 2;
+        if (b.coinflip(1, 2)) {
+            turn(b,s)["TurnOrder"] = 4;
             turn(b,s)["QuickClawed"] = true;
         }
     }
