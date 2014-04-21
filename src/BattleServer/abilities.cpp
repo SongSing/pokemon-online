@@ -1696,7 +1696,9 @@ struct AMMagicBounce : public AM
         bool isTaunted = b.counters(target).hasCounter(BC::Taunt);
         int tauntCounter = (isTaunted ? b.counters(target).count(BC::Taunt) : 0);
 
-        b.counters(target).removeCounter(BC::Taunt);
+        if (isTaunted) {
+            b.counters(target).removeCounter(BC::Taunt);
+        }
 
         b.useAttack(target,move,true,false);
 
