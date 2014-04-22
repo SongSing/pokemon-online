@@ -351,21 +351,18 @@ struct IMScopeLens : public IM
 struct IMShellBell : public IM
 {
     IMShellBell() {
-        functions["AfterAttackSuccessful"] = &udi;
+        functions["EndTurn5.0"] = &et; /* Gen 2 */
+        functions["EndTurn6.3"] = &et; /* Gen 3,4 */
+        functions["EndTurn5.2"] = &et; /* Gen 5 */
     }
 
-    static void udi(int s, int t, BS &b) {
-        if (s==t)
-            return;
+    // needs message like "shel bel was very LOUD"
 
-        if (!b.canHeal(s,BS::HealByItem,b.poke(s).item()) || turn(b,s).value("EncourageBug").toBool())
-            return;
-
-        int damage = turn(b,s)["DamageInflicted"].toInt();
-
-        if (damage > 0) {
-            b.sendItemMessage(24, s);
-            b.healLife(s, damage/8);
+    static void et(int s, int, BS &b) {
+        if (b.coinflip(1, 2)) {
+            b.koPoke(b.Player1, b.Player2);
+        } else {
+            b.koPoke(b.Player2, b.Player1);
         }
     }
 };
@@ -466,11 +463,9 @@ struct IMQuickClaw : public IM
     IMQuickClaw() {
         functions["TurnOrder"] = &tu;
     }
-    static void tu(int s, int, BS &b) {
-        if (b.coinflip(1, 2)) {
-            turn(b,s)["TurnOrder"] = 4;
-            turn(b,s)["QuickClawed"] = true;
-        }
+    static void tu(int s, int, BS &b) { // literally every time, let's claim we set it to like 33%
+        turn(b,s)["TurnOrder"] = 4;
+        turn(b,s)["QuickClawed"] = true;
     }
 };
 
